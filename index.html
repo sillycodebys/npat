@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Name Place Animal Thing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#2438c9;--ink:#16193a;--paper:#fffef9;--line:#cfe0f3;--red:#ff5d6c;--yel:#ffd23f;--pink:#ff7ab6;--mint:#27c9a5;--vio:#8b5cf6;--org:#ff9f43}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:800 16px/1.4 Nunito,"Trebuchet MS",system-ui,sans-serif;
+ background:radial-gradient(circle at 12% 8%,#3b52ff 0,transparent 40%),var(--blue)}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 14px 40px}
+h1{font:400 clamp(1.5rem,5vw,2.5rem)/1 "Bowlby One",Impact,sans-serif;color:#fff;text-align:center;margin:6px 0 20px;letter-spacing:.01em}
+h1 b{display:inline-block;padding:2px 9px;border-radius:8px;margin:0 2px;color:var(--ink);transform:rotate(-3deg)}
+h1 b:nth-child(1){background:var(--pink)}h1 b:nth-child(2){background:var(--yel);transform:rotate(2deg)}h1 b:nth-child(3){background:var(--mint)}h1 b:nth-child(4){background:var(--org);transform:rotate(3deg)}
+.grid{display:grid;grid-template-columns:1fr 290px;gap:16px}
+@media(max-width:780px){.grid{grid-template-columns:1fr}}
+.sheet{background:var(--paper);border-radius:6px;padding:20px 20px 20px 58px;position:relative;box-shadow:0 6px 0 rgba(0,0,0,.22);
+ background-image:repeating-linear-gradient(transparent 0 29px,var(--line) 29px 30px);background-position:0 8px}
+.sheet:before{content:"";position:absolute;left:40px;top:0;bottom:0;width:2px;background:var(--red);opacity:.55}
+.plain{padding-left:20px}.plain:before{display:none}
+button{font:inherit;font-weight:800;border:0;border-radius:12px;padding:11px 20px;background:var(--yel);color:var(--ink);cursor:pointer;box-shadow:0 4px 0 #c79a00;transition:transform .08s}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 #c79a00}
+button.go{background:var(--mint);box-shadow:0 4px 0 #148a72}button.alt{background:#e9ecff;box-shadow:0 4px 0 #aab2ea}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:3px solid var(--vio);outline-offset:2px}
+input{font:inherit;width:100%;padding:10px 12px;border:2px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.mute{opacity:.65;font-weight:600}
+.code{font:400 2.2rem/1 "Bowlby One",sans-serif;letter-spacing:.12em;background:var(--ink);color:var(--yel);padding:6px 14px;border-radius:10px;display:inline-block}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:4px 12px;border-radius:99px;background:#e9ecff;border:2px solid var(--ink)}
+.chip.done{background:var(--mint)}.chip.off{opacity:.4}
+.tile{font:400 clamp(6rem,24vw,10rem)/1 "Bowlby One",Impact,sans-serif;width:min(100%,230px);aspect-ratio:1;margin:8px auto;display:grid;place-items:center;border-radius:28px;background:var(--pink);color:#fff;text-shadow:4px 4px 0 var(--ink);border:4px solid var(--ink);box-shadow:8px 8px 0 var(--ink);transform:rotate(-4deg)}
+.tile.small{width:96px;font-size:4.4rem;margin:0;box-shadow:5px 5px 0 var(--ink)}
+.tile.land{animation:pop .5s}@keyframes pop{0%{transform:scale(1.35) rotate(6deg)}100%{transform:scale(1) rotate(-4deg)}}
+@media(prefers-reduced-motion:reduce){.tile.land{animation:none}}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;margin:16px 0}
+@media(max-width:560px){.fields{grid-template-columns:1fr}}
+.tag{display:inline-block;padding:2px 10px;border-radius:8px;margin-bottom:4px;border:2px solid var(--ink)}
+.t-name{background:var(--pink)}.t-place{background:var(--mint)}.t-animal{background:var(--yel)}.t-thing{background:#c4b0ff}
+.timer{font:400 2.6rem/1 "Bowlby One",sans-serif;color:var(--red)}
+.tbl{overflow-x:auto;background:#fff;border:2px solid var(--ink);border-radius:10px}
+table{border-collapse:collapse;width:100%}th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.pts{display:inline-block;min-width:34px;text-align:center;border-radius:99px;padding:0 7px;margin-left:4px;font-size:.85rem;background:var(--mint)}
+.pts.five{background:var(--yel)}.pts.zero{background:#ddd}
+s{opacity:.55}.why{font-size:.78rem;color:var(--red)}
+.flag{padding:0 6px;font-size:.8rem;border-radius:8px;box-shadow:none;background:transparent;border:1.5px solid var(--ink)}
+.flag.on{background:var(--red);color:#fff}
+.chat{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:12px;display:flex;flex-direction:column;height:440px;box-shadow:0 6px 0 rgba(0,0,0,.22)}
+#msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.m{background:#eef0ff;border-radius:12px;padding:6px 10px;word-break:break-word}.m.me{background:#fff3c4}
+.err{color:var(--red)}
+.cf{position:fixed;top:-20px;width:10px;height:14px;z-index:9;pointer-events:none;animation:fall linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.score{display:flex;justify-content:space-between;padding:3px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1><b>Name</b><b>Place</b><b>Animal</b><b>Thing</b></h1>
+<div id="app"></div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const SAME=5, UNIQUE=10;
+const CATS=[["name","🧑"],["place","🌍"],["animal","🐾"],["thing","📦"]];
+const LET="ABCDEFGHIJKLMNOPRSTUVW";
+const s=io(); let S=null, key="", spin=null, nick=localStorage.getItem("npat")||"", recvAt=0, draftT=null;
+const $=q=>document.querySelector(q);
+const esc=x=>String(x??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+s.on("state",st=>{S=st;recvAt=Date.now();render();});
+s.on("err",m=>{const e=$("#jerr");if(e)e.textContent=m;});
+s.on("landed",({letter,counted})=>{
+  clearInterval(spin);spin=null;
+  const t=$("#tile"); if(t){t.textContent=letter;t.classList.remove("land");void t.offsetWidth;t.classList.add("land");}
+  const m=$("#pmsg"); if(m) m.textContent=counted?"Locked in!":letter+" was already used, so it doesn’t count. Spin again!";
+  const b=$("#spinbtn"); if(b){b.textContent="Start";b.dataset.on="";b.disabled=S&&S.picker!==S.me||counted;}
+});
+
+function join(){
+  $("#app").innerHTML=`<div class="sheet" style="max-width:480px;margin:auto">
+   <p style="margin:0 0 4px">Your name</p><input id="nick" maxlength="16" value="${esc(nick)}" placeholder="e.g. Sara">
+   <div class="row" style="margin-top:16px"><button class="go" id="mk">Create private room</button><button id="qp">Quick play with strangers</button></div>
+   <p class="mute" style="margin:18px 0 6px">Got a code from a friend?</p>
+   <div class="row" style="flex-wrap:nowrap"><input id="jc" maxlength="4" placeholder="ABCD" style="width:120px;text-transform:uppercase"><button class="alt" id="jn">Join</button></div>
+   <p class="err" id="jerr"></p></div>`;
+  const nm=()=>{nick=$("#nick").value.trim();if(!nick){$("#jerr").textContent="Type your name first.";return false;}localStorage.setItem("npat",nick);return true;};
+  $("#mk").onclick=()=>nm()&&s.emit("create",nick,false);
+  $("#qp").onclick=()=>nm()&&s.emit("quick",nick);
+  $("#jn").onclick=()=>nm()&&s.emit("join",nick,$("#jc").value.trim());
+}
+
+function render(){
+  const k=S.phase+":"+S.round;
+  if(k!==key){
+    key=k; clearInterval(spin); spin=null;
+    $("#app").innerHTML=`<div class="grid"><div id="main"></div><div class="chat"><b>Chat</b><div id="msgs"></div><div class="row" style="flex-wrap:nowrap"><input id="cin" maxlength="200" placeholder="Say something…"><button class="alt" id="cs">Send</button></div></div></div>`;
+    $("#cs").onclick=chat;$("#cin").onkeydown=e=>{if(e.key==="Enter")chat();};
+    main();
+  }
+  dyn();
+}
+function chat(){const i=$("#cin");if(i.value.trim())s.emit("chat",i.value);i.value="";}
+const head=()=>`<div class="row" style="justify-content:space-between;margin-bottom:10px"><div>Room <span class="code">${esc(S.code)}</span></div><span class="mute">${S.round?"Round "+S.round+(S.rounds?" of "+S.rounds:""):"Share this code with friends"}</span></div>`;
+const nameOf=id=>(S.players.find(p=>p.id===id)||{}).name||"Someone";
+
+function main(){
+  const m=$("#main"), host=S.host===S.me;
+  if(S.phase==="lobby"){
+    m.innerHTML=`<div class="sheet">${head()}<p>Players in the room:</p><div class="chips" id="pl"></div>
+     <p style="margin:16px 0 6px">How long is the game?</p><div class="row">${[[1,"1 round"],[5,"5 rounds"],[0,"Endless"]].map(([n,t])=>`<button class="alt" data-r="${n}" ${host?"":"disabled"}>${t}</button>`).join("")}</div>
+     <div class="row" style="margin-top:18px"><button class="go" id="st" ${host?"":"disabled"}>${host?"Start game":"Waiting for the host…"}</button></div>
+     <p class="mute">Same answer as someone else = ${SAME} points. A different valid answer = ${UNIQUE} points. Brand names and fake places score 0. Anyone can flag a bad answer after the round.</p></div>`;
+    $("#st").onclick=()=>s.emit("start");
+    document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>s.emit("rounds",+b.dataset.r));
+  }else if(S.phase==="pick"){
+    const mine=S.picker===S.me;
+    m.innerHTML=`<div class="sheet">${head()}<p style="margin:0">Round ${S.round}${S.rounds?" of "+S.rounds:""}: ${mine?"your turn to pick the letter!":esc(nameOf(S.picker))+"’s turn to pick"}</p>
+     <div class="tile" id="tile">?</div>
+     <div class="row" style="justify-content:center"><button class="go" id="spinbtn" ${mine?"":"disabled"}>${mine?"Start":"Waiting…"}</button>${host&&!mine?'<button class="alt" id="skip">Skip turn</button>':""}</div>
+     <p class="mute" id="pmsg" style="text-align:center">${mine?"Press Start, then Stop. A letter that was already used doesn’t count.":""}</p>
+     <p class="mute">Used letters: ${S.used.join(" ")||"none yet"}</p></div>`;
+    const b=$("#spinbtn");
+    if(mine)b.onclick=()=>{
+      if(!b.dataset.on){b.dataset.on=1;b.textContent="Stop!";$("#pmsg").textContent="";spin=setInterval(()=>{$("#tile").textContent=LET[Math.random()*LET.length|0];},60);}
+      else{b.disabled=true;s.emit("stop");}
+    };
+    if($("#skip"))$("#skip").onclick=()=>s.emit("skip");
+  }else if(S.phase==="play"){
+    m.innerHTML=`<div class="sheet">${head()}<div class="row" style="justify-content:space-between"><div class="tile small">${esc(S.letter)}</div><div style="text-align:right"><div class="mute" id="tl">Take your time</div><div class="timer" id="tm"></div></div></div>
+     <div class="fields">${CATS.map(([c,e])=>`<div><span class="tag t-${c}">${e} ${c}</span><input data-c="${c}" autocomplete="off" placeholder="${esc(S.letter)}…"></div>`).join("")}</div>
+     <div class="row"><button class="go" id="dn">I’m done!</button><span class="mute" id="dm"></span></div>
+     <p class="mute">Players:</p><div class="chips" id="pl"></div></div>`;
+    document.querySelectorAll("[data-c]").forEach(i=>i.oninput=()=>{clearTimeout(draftT);draftT=setTimeout(()=>s.emit("draft",ans()),250);});
+    $("#dn").onclick=()=>{const a=ans();if(CATS.some(([c])=>!a[c])){$("#dm").textContent="Fill in all four boxes first.";return;}
+      s.emit("done",a);$("#dn").disabled=true;document.querySelectorAll("[data-c]").forEach(i=>i.disabled=true);$("#dm").textContent="Sent! Waiting for the others…";};
+    const first=document.querySelector("[data-c]");if(first)first.focus();
+  }else if(S.phase==="final"){
+    const rank=[...S.players].sort((a,b)=>b.total-a.total), top=rank[0].total, win=rank.filter(p=>p.total===top), won=win.some(w=>w.id===S.me);
+    m.innerHTML=`<div class="sheet plain" style="text-align:center">${head()}<div style="font-size:4.5rem;line-height:1">🏆</div>
+      <h2 style="font:400 clamp(1.6rem,6vw,2.6rem)/1.1 'Bowlby One',Impact,sans-serif;margin:8px 0">${win.length>1?"It’s a tie! "+win.map(w=>esc(w.name)).join(" & "):esc(win[0].name)+" wins!"}</h2>
+      <p>${won?"That’s you! 🎉 Great game.":"Good game, "+esc(nameOf(S.me))+"! Ask for a rematch."}</p>
+      <div style="max-width:360px;margin:12px auto;text-align:left">${rank.map((p,i)=>`<div class="score" style="font-size:1.2rem"><span>${["🥇","🥈","🥉"][i]||(i+1)+"."} ${esc(p.name)}</span><b>${p.total}</b></div>`).join("")}</div>
+      <div class="row" style="justify-content:center"><button class="go" id="ag" ${S.host===S.me?"":"disabled"}>${S.host===S.me?"Play again":"Waiting for the host…"}</button></div></div>`;
+    $("#ag").onclick=()=>s.emit("again"); confetti();
+  }else{
+    const rows=S.rows,ids=Object.keys(rows),last=S.rounds&&S.round>=S.rounds;
+    m.innerHTML=`<div class="sheet plain">${head()}<p style="margin:0 0 8px">Round ${S.round}${S.rounds?" of "+S.rounds:""} · letter ${esc(S.letter)}. Everyone’s answers:</p><div class="tbl" id="tb"></div>
+     <p class="mute">Spot a brand name or a made-up place? Tap 🚩 to flag it. When most players flag it, it scores 0.</p>
+     <p style="margin:14px 0 6px"><b>Scoreboard</b></p><div id="bd"></div>
+     <div class="row" style="margin-top:14px"><button class="go" id="nx">${last?"See the winner 🏆":"Next round"}</button>${!S.rounds?'<button class="alt" id="en">End game and crown the winner</button>':""}</div></div>`;
+    $("#nx").onclick=()=>s.emit("next");
+    if($("#en"))$("#en").onclick=()=>s.emit("end");
+  }
+}
+
+const ans=()=>{const a={};document.querySelectorAll("[data-c]").forEach(i=>a[i.dataset.c]=i.value.trim().slice(0,30));return a;};
+
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+  const cols=["#ff7ab6","#ffd23f","#27c9a5","#8b5cf6","#ff9f43","#ffffff"];
+  for(let i=0;i<90;i++){const d=document.createElement("i");d.className="cf";
+    d.style.cssText=`left:${Math.random()*100}vw;background:${cols[i%6]};animation-duration:${2.5+Math.random()*2.5}s;animation-delay:${Math.random()*1.2}s`;
+    document.body.appendChild(d);setTimeout(()=>d.remove(),7500);}
+}
+function dyn(){
+  document.querySelectorAll("[data-r]").forEach(b=>{const on=+b.dataset.r===S.rounds;b.classList.toggle("go",on);b.classList.toggle("alt",!on);});
+  const pl=$("#pl");
+  if(pl)pl.innerHTML=S.players.map(p=>`<span class="chip ${S.phase==="play"&&p.done?"done":""} ${p.on?"":"off"}">${esc(p.name)}${p.id===S.host?" ★":""}${S.phase==="play"&&p.done?" ✓":""}</span>`).join("");
+  const bd=$("#bd");
+  if(bd)bd.innerHTML=[...S.players].sort((a,b)=>b.total-a.total).map((p,i)=>`<div class="score"><span>${i+1}. ${esc(p.name)}</span><b>${p.total}</b></div>`).join("");
+  const tb=$("#tb");
+  if(tb&&S.rows)tb.innerHTML=`<table><tr><th>Player</th>${CATS.map(([c,e])=>`<th>${e} ${c}</th>`).join("")}<th>Round</th></tr>`+Object.keys(S.rows).map(id=>{
+    const r=S.rows[id];
+    return `<tr><td><b>${esc(nameOf(id))}</b></td>${CATS.map(([c])=>{const a=r.cats[c],k=id+"|"+c,n=S.flags[k]||0;
+      const body=!a.t?"—":a.why?`<s>${esc(a.t)}</s> <span class="why">${esc(a.why)}</span>`:esc(a.t);
+      const fl=a.t&&id!==S.me&&a.why!=="wrong letter"?` <button class="flag ${S.mine.includes(k)?"on":""}" data-id="${id}" data-c="${c}">🚩${n||""}</button>`:"";
+      return `<td>${body} <span class="pts ${a.p===0?"zero":a.p===SAME?"five":""}">+${a.p}</span>${fl}</td>`;}).join("")}<td><b>${r.total}</b></td></tr>`;}).join("")+`</table>`;
+  if(tb)tb.querySelectorAll(".flag").forEach(b=>b.onclick=()=>s.emit("flag",b.dataset.id,b.dataset.c));
+  const mg=$("#msgs");
+  if(mg){mg.innerHTML=S.chat.map(c=>`<div class="m ${c.id===S.me?"me":""}"><b>${esc(c.name)}:</b> ${esc(c.text)}</div>`).join("")||'<span class="mute">No messages yet.</span>';mg.scrollTop=mg.scrollHeight;}
+}
+
+setInterval(()=>{
+  if(!S)return;
+  if(S.phase==="play"&&S.left!=null){const l=Math.max(0,Math.ceil((S.left-(Date.now()-recvAt))/1000));const t=$("#tm");if(t)t.textContent=l+"s";const x=$("#tl");if(x)x.textContent="Hurry, someone finished!";}
+  if(S.phase==="lobby"&&S.startIn!=null){const l=Math.max(0,Math.ceil((S.startIn-(Date.now()-recvAt))/1000));const b=$("#st");if(b)b.textContent="Starting in "+l+"s…";}
+},250);
+join();
+</script>
+</body>
+</html>
